@@ -46,7 +46,7 @@ select name as Nama, continent as Benua, lifeexpectancy as AngkaHarapanHidup, GN
     -> from country
     -> where continent = 'Asia'
     -> and lifeexpectancy > (select avg(lifeexpectancy) from country where continent = 'Europe')
-    -> order by lifeexpectancy;
+    -> order by lifeexpectancy desc;
 
 ========== 6) Tampilkan daftar 10 negara yang bahasa resminya (official language) adalah bahasa Inggris, dan memiliki persentase pengguna bahasa Inggris tertinggi di dunia ======================================================
 
@@ -56,6 +56,7 @@ select country.code, name, language, isofficial, percentage
     -> on country.code = countrylanguage.countrycode
     -> where language = 'English'
     -> and isofficial = 'T'
+    -> order by percentage desc
     -> limit 10;
 
 ========== 7) Tampilkan daftar negara ASEAN beserta populasi negaranya, Pendapatan Nasional Bruto/GNP (Gross National Product), ibukota & populasi ibukota ======================================================
