@@ -1,0 +1,78 @@
+=====================================================================================================================================
+Soal 1 - MySQL Database
+=====================================================================================================================================
+
+Make sure your MySQL Server is active
+Open terminal to enter MySQL Monitor by run this code: (btw I'm using Mac)
+1. $ cd /usr/local/mysql/bin
+2. $ ./mysql -u <username> -p <password>
+
+========== 1) Tampilkan daftar 10 kota terpadat di Indonesia ======================================================
+
+select * from city
+    -> where CountryCode = 'IDN'
+    -> order by population desc
+    -> limit 10;
+
+========== 2) Tampilkan daftar 10 kota terpadat di dunia beserta asal negaranya ======================================================
+
+select id, city.name as nama_kota, district, country.name, city.population
+    -> from city
+    -> join country
+    -> on city.CountryCode = country.Code
+    -> order by population desc
+    -> limit 10; 
+
+========== 3) Tampilkan daftar 10 negara yang tercatat merdeka paling awal ======================================================
+
+select code, name, continent, region, indepyear as tahun_merdeka
+    -> from country
+    -> where indepyear is not null
+    -> order by tahun_merdeka
+    -> limit 10;
+
+========== 4) Tampilkan daftar benua yang memiliki lebih dari 10 negara di dalamnya ======================================================
+
+select continent as Benua, count(name) as Jumlah_Negara, population as Populasi, avg(lifeexpectancy) as Rata_AngkaHrpnHdp
+    -> from country
+    -> group by Benua
+    -> having Jumlah_Negara > 10
+    -> order by populasi Desc
+    -> limit 10;
+
+========== 5) Tampilkan daftar negara-negara Asia yang memiliki angka harapan hidup lebih dari rata-rata angka harapan hidup negara-negara Eropa ======================================================
+
+select name as Nama, continent as Benua, lifeexpectancy as AngkaHarapanHidup, GNP
+    -> from country
+    -> where continent = 'Asia'
+    -> and lifeexpectancy > (select avg(lifeexpectancy) from country where continent = 'Europe')
+    -> order by lifeexpectancy;
+
+========== 6) Tampilkan daftar 10 negara yang bahasa resminya (official language) adalah bahasa Inggris, dan memiliki persentase pengguna bahasa Inggris tertinggi di dunia ======================================================
+
+select country.code, name, language, isofficial, percentage
+    -> from country
+    -> join countrylanguage
+    -> on country.code = countrylanguage.countrycode
+    -> where language = 'English'
+    -> and isofficial = 'T'
+    -> limit 10;
+
+========== 7) Tampilkan daftar negara ASEAN beserta populasi negaranya, Pendapatan Nasional Bruto/GNP (Gross National Product), ibukota & populasi ibukota ======================================================
+
+select country.name as Negara_ASEAN, country.population as Populasi_Negara, GNP, city.name as Ibukota, city.population as Populasi_Ibukota
+    -> from country
+    -> join city
+    -> on country.code = city.countrycode
+    -> where region = 'southeast asia'
+    -> and id = capital;
+
+========== 8) Tampilkan daftar negara G20 beserta populasi negaranya, Pendapatan Nasional Bruto/GNP (Gross National Product), ibukota & populasi ibukota ======================================================
+
+select country.name as Negara_G20, country.population as Populasi_Negara, GNP, city.name as Ibukota, city.population as Populasi_Ibukota
+    -> from country
+    -> join city
+    -> on country.code = city.countrycode
+    -> where country.name in ('Argentina', 'Australia', 'Brazil', 'Canada', 'China', 'France', 'Germany', 'India', 'Indonesia', 'Italy', 'Japan', 'Mexico', 'Russian Federation', 'Saudi Arabia', 'South Africa', 'South Korea', 'Turkey', 'United Kingdom', 'United States')
+    -> and id = capital;
+
